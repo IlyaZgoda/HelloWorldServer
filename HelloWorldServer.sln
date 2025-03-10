@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35417.141 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "HelloWorldServer", "HelloWorldServer\HelloWorldServer.njsproj", "{D40C5BEC-9245-40F3-89A2-8A7BAF3FB307}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D40C5BEC-9245-40F3-89A2-8A7BAF3FB307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D40C5BEC-9245-40F3-89A2-8A7BAF3FB307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D40C5BEC-9245-40F3-89A2-8A7BAF3FB307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D40C5BEC-9245-40F3-89A2-8A7BAF3FB307}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

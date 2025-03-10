@@ -1,0 +1,17 @@
+{
+  "name": "hello-world-server",
+  "version": "0.0.0",
+  "description": "HelloWorldServer",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "express": "^4.21.2"
+  },
+  "eslintConfig": {},
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}
