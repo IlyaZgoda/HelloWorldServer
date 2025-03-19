@@ -24,8 +24,24 @@ const generateUsers = (count) => {
     return users;
 };
 
+const generateReviews = (count) => {
+    const reviews = [];
+    for (let i = 1; i <= count; i++) {
+        reviews.push({
+            id: i,
+            name: faker.person.fullName(),
+            email: faker.internet.email(),
+            message: faker.lorem.paragraph(),
+            date: faker.date.past().toLocaleString(),
+        });
+    }
+
+    return reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+};
+
 let users = generateUsers(100); 
-let reviews = [];
+
+let reviews = generateReviews(100);
 
 const ADMIN_CREDENTIALS = {
     email: 'admin@example.com', 
@@ -75,11 +91,9 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/feedback', (req, res) => {
     const { name, email, message } = req.body;
-
     if (!name || !email || !message) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-
     const newReview = {
         id: Date.now(),
         name,
@@ -87,14 +101,25 @@ app.post('/api/feedback', (req, res) => {
         message,
         date: new Date().toLocaleString(),
     };
-
     reviews.push(newReview);
+
+    reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.status(201).json({ message: 'Feedback submitted successfully', review: newReview });
 });
-
 app.get('/api/feedback', (req, res) => {
-    res.status(200).json(reviews);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const startIndex = (page - 1) * limit;
+
+    const paginatedReviews = reviews.slice(startIndex, startIndex + limit);
+
+    res.status(200).json({
+        reviews: paginatedReviews, 
+        total: reviews.length,
+        currentPage: page,
+        hasNext: startIndex + limit < reviews.length,
+    });
 });
 
 app.delete('/api/feedback/:id', (req, res) => {
@@ -174,6 +199,37 @@ app.delete('/api/admin/users/:id', (req, res) => {
 
     users.splice(index, 1);
     res.status(200).json({ message: 'User deleted successfully' });
+});
+
+app.get('/api/admin/feedback', (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const startIndex = (page - 1) * limit;
+
+    const sortedReviews = reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const paginatedReviews = sortedReviews.slice(startIndex, startIndex + limit);
+
+    res.status(200).json({
+        reviews: paginatedReviews, 
+        total: reviews.length,
+        currentPage: page,
+        hasNext: startIndex + limit < reviews.length,
+    });
+});
+
+
+app.delete('/api/admin/feedback/:id', (req, res) => {
+    const { id } = req.params;
+
+    const index = reviews.findIndex((review) => review.id === Number(id));
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Отзыв не найден' });
+    }
+
+    reviews.splice(index, 1);
+
+    res.status(200).json({message: 'Отзыв успешно удален'});
 });
 
 app.get('/', (req, res) => {
